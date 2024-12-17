@@ -1,102 +1,217 @@
-# NSGs-and-Inspecting-Network-Protocols
-
 
 <p align="center">
-<img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/>
+  <img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/> 
 </p>
 
-<h1>Network Security Groups (NSGs) and Inspecting Traffic Between Azure Virtual Machines</h1>
-In this tutorial, we observe various network traffic to and from Azure Virtual Machines with Wireshark as well as experiment with Network Security Groups. <br />
+<h1 align = "center">Virtual Machine and Inspecting Network Protocols</h1>
+This tutorial outlines how to set up a virtual machine network in Microsoft Azure and doing some exercises observing traffic.
+
+</p>
+
+<h3>Environments and Technologies </h3>
+
+<li>Microsoft Azure (Virtual Machines/Compute)</li>
+<li>Microsoft Remote Desktop</li>
+<li>Windows Command Prompt</li>
+<li>Wireshark</li>
+</li>
+</p>
+<b>Network Protocols</b></li>:
+<li>DNS:  Domain Name Systems</li>
+<li>ICMP: Internet Control Message Protocol</li>
+<li>SSH:  Secure Shell</li>
+<li>DHCP: Dynamic Host Configuration Protocol</li>
+<li>RDP:  Remote Desktop Connection</li>
+<p>
+</ul>
+
+<h3>Operating Systems </h3>
+
+<li>Windows 10 (21H2)</li>
+<li>Linux (Ubuntu 20.04)</li>
+</ul>
 
 
-<h2>Environments and Technologies Used</h2>
+<h3>List of Prerequisites</h3>
+<ol>
+<li>Microsoft Azure Account and Subscription</li>
+<p>
+<li>Access to Microsoft Remote Desktop Connection. For MacOS users, follow <a href = "https://www.youtube.com/watch?v=0lllpAhgAJs&ab_channel=TheHostingVideos">this video</a> to use Remote Desktop on Mac</li>
+<p>
+<li>Notepad (Optional): to record log in information for our Virtual Machines</li>
+<p>
+</ol>
+</p>
+</ol>
 
-- Microsoft Azure (Virtual Machines/Compute)
-- Remote Desktop
-- Various Command-Line Tools
-- Various Network Protocols (SSH, RDH, DNS, HTTP/S, ICMP)
-- Wireshark (Protocol Analyzer)
+<h3>Installation Steps</h3>
 
-<h2>Operating Systems Used </h2>
-
-- Windows 10 (21H2)
-- Ubuntu Server 20.04
-
-<h2>Walkthrough</h2>
+<h3>Creating a Resource Group and Virtual Machines</h3>
 
 <p>
 
-![Screenshot 2024-10-25 161610](https://github.com/user-attachments/assets/3b69a3a5-9e6e-4fae-8ff3-5a55639baac2)
-
+</li>
 </p>
+<b>Resource Group</b>: In the Azure Portal, go to resource groups to create a resource group and name it RG-Lab-01. Take note of the region of the resource group as it'll come in use when setting up the virtual machines. When finished, click on Review + Create.</li>
 <p>
-Create 2 VM's in Azure. One running Windows & the other running Linux. Then grab the privite IP of the Windows VM And Remote Desktop Connect to it.
-
+<img src="https://i.imgur.com/VhKtvlv.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
 </p>
+<b>Virtual Machine</b>: Access Azure Portal, go to Virtual Machines to create an azure virtual machine. Select the resource group we've created (RG-Lab-01) and name it VM-1. Make sure the Region is the same as the resource group previously created. To set the Availability Options, set it to No Infrastructure and Security Type to Standard.</i>
+</p>
+<b>Image</b> (Operating System): set it to Windows 10 Pro, Version 22H2, x64 Gen2</li>
+</p>
+<b>Size</b>: the general processing power and RAM of the VM, set it to Standard_E2s_V3 which provides 2 virtual cpus and 16 GBs of RAM</li>
+<p>
+<img src="https://i.imgur.com/RQit8af.png" height="50%" width="50%" alt="Disk Sanitization Steps"/>
+<p>
+Set the username and password of your VM for logging in and make sure to check the box for licensing agreements
+<p>
+Go to the Network tab, notice the Virtual Network created by the Virtual Machine by the Resource Group. It will be made automatically by the Virtual Machine
+<p>
+<img src="https://i.imgur.com/oa1kwem.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
+</p>
+Click on Review + Create to deploy the virtual machine. Wait approximately five to ten minutes to fully deploy before continuing
+</p>
+<b>Virtual Machine 2</b>: same process as Virtual Machine 1 except name it VM-2 and set the image to Ubuntu Server 20.04 LTS x64 Gen2. Ubuntu by default has their Administrator account authentication as SSH public key, so we must set it as Password for logging in through Remote Desktop
+</p>
+<img src="https://i.imgur.com/mfJoqUy.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
+</p>
+</ul>
+</p>
+
 <br />
 
+<h3>Logging into a Virtual Machine using Remote Desktop Connection</h3>
+
 <p>
 
-  ![Screenshot 2024-10-25 150455](https://github.com/user-attachments/assets/035ae20e-7dc3-4d5b-9d84-b3b076189adb)
-
-</p>
 <p>
-Once Connected to the Windows VM. Download & install Wireshark. (Windows x64 Installer) This allows you to view traffic between the 2 VMS.
+In Azure Portal go to VM-1, go to Overview, go to Public IP Address section and copy it. Open Remote Desktop Connection and paste it there, then click Connect. Log in using the username and password you set up for VM1 (a pop up may show for verification, click "Yes" if it does)
+<p>
+<img src="https://i.imgur.com/5cadoWL.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+You have successfully logged into the Virtual Machine
+<p>
+<img src="https://i.imgur.com/8liNZe7.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
 </p>
+</p>
+
 <br />
 
-<p>
-
-![Screenshot 2024-10-25 162906](https://github.com/user-attachments/assets/66ede834-0087-4816-b7e4-a7308784b4ad)
-
+<h3>Observing Traffic in Virtual Machines</h3>
 </p>
-<p>
-After wireshark is installed. Open the app select ethernet interface & start a package Capture & observe the traffic. 
-
 </p>
+
+<br />
+<p>
+Open a web browser (Microsoft Edge) in the virtual machine. Search for and install <a href="https://www.wireshark.org/download.html">Wireshark</a>. Download Windows x64 Installer.
+<p>
+</p>
+<img src="https://i.imgur.com/tclz6eG.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+</p>
+
+<h3>Observing ICMP Traffic</h3>
+<p>
+</p>
+Open Wireshark, run as administrator and start capturing packets (blue fin icon). This lets you see the actual live traffic on the virtual machine. In the filter bar type icmp to filter incoming ICMP packets. ICMP is used for reporting errors and performing network diagnostics.
+<p>
+<img src="https://i.imgur.com/uLZKzCC.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+</p>
+Go to the Azure Portal on the physical desktop, go to VM-2 and note its Private IP Address
+<p>
+<img src="https://i.imgur.com/KD0EE3P.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+Open Windows Powershell in VM-1 and in the command line enter ping [VM2 Private IP]. Then ICMP packets should display in Wireshark.
+<p>
+<img src="https://i.imgur.com/VEGwlql.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+</p>
+On Windows Powershell enter ping [VM-2 Private IP], then -t. This starts an effect of non stop ping between the Virtual Machines, resulting in nonstop ICMP packets displaying in Wireshark
+</p>
+<img src="https://i.imgur.com/j0P3UtO.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+</p>
+Access the Azure Portal, go to VM-2 Network Security Group (NSG). It should be named VM-2-nsg, in order to stop the traffic
+</p>
+Go to inbound security rules and create a security rule that denies ICMPs. Click on Add to open a right side pop up to set the rule
+<p>
+Enter this information
+<p>
+<img src="https://i.imgur.com/Hxi5n87.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+Set the priority to 200. Name the rule deny_icmp_ping_from_anywhere, then click Add to finish
+</p>
+<b>Note</b>: priorities are inversely proportional meaning lower numbers have higher priority
+</p>
+When completed, Request timed out will display in Powershell in VM1, this means ICMP ping has halted from the security rule that was added
+<p>
+<img src="https://i.imgur.com/0dbd0E6.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+To restart the traffic, go to the Azure Portal and set the inbound security rule's action to Allow and save
+<p>
+</p>
+
 <br />
 
-![image](https://github.com/user-attachments/assets/be095fd3-184c-4efb-bf31-93f1b1feaeff)
+<h3>Observing SSH Traffic</h3>
 
+<p>
+Go to Windows Powershell inside VM-1, type in ssh labuser@[VM2's Private IP], enter. Enter "yes" and it will ask for the password of VM-2
+<p>
+<b>Note</b>: we are accesssing the terminal of VM-2 (Linux's version of a command prompt) it doesen't display input and dots when typing a password. It is registering input when typing
+<p>
+Typing in commands such as uname -a, id, pwd, or sudo apt will display traffic on Wireshark. You can filter ssh traffic in Wireshark by typing in ssh in the filter bar, and observe the results
+<p>
+<img src="https://i.imgur.com/YMgANPk.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
+<p>
+<img src="https://i.imgur.com/Kw9h3bt.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+When finished, you can enter the command exit to end session
+<p>
 </p>
+
 <br />
 
-Filter ICMP traffic on wireshark & grab the Linux Private IP address from azure. Run Power Shell on the Windows VM & Ping the Linux VM Private IP address. Observe the trafffic in Wireshark. Ping is used for testing network connectivity by sending packets of data and measuring the response time.
+<h3>Observing DHCP Traffic</h3>
 
-![Screenshot 2024-10-28 150603](https://github.com/user-attachments/assets/1ddec140-5b70-4af3-897f-afe3e918e988)
+<p>
+Filter dhcp traffic in Wireshark by entering dhcp in the filter bar. DHCP assign IP Addresses to devices new to the network the moment the device joins the network. We can reassign an IP Address in the virtual machine by going to Powershell and entering the command ipconfig /renew
+<p>
+<img src="https://i.imgur.com/o3QRVhK.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+<img src="https://i.imgur.com/uh5eDFi.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+</p>
 
+<br/>
 
-From within the Windows VM Ping "Google.com" & Obeserve the ICMP traffic inside WireShark
+<h3>Observing DNS Traffic</h3>
 
-![Screenshot 2024-10-28 151603](https://github.com/user-attachments/assets/52b85815-3919-4774-a3e3-9bca94ab9267)
+<p>
+Filter DNS traffic in Wireshark by entering dns in the filter bar. In Powershell type in nslookup www.google.com
+<p>
+<img src="https://i.imgur.com/cx0T23Z.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+<p>
+<img src="https://i.imgur.com/CCO0tht.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+</p>
 
-![Screenshot 2024-10-28 151856](https://i.imgur.com/oSiHxnk.png)
+<br/>
 
-in Azure Configure Network Security Rule To Deny ICMP traffic. 
+<h3>Observing RDP Traffic</h3>
 
-Azure > Linux-VM > Networking > Network Settings 
+<p>
+Filter RDP traffic in Wireshark by entering tcp.port==3389 in the filter bar and you'll notice non-stop traffic. The RDP is constantly showing you a live stream from one computer to another, therefore traffic is always being transmitted
+<p>
+<img src="https://i.imgur.com/dgIWhy8.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+</p>
 
-Then click "Linux-vm-nsg" in the top right. 
+<br/>
 
-Settings > Inbound Security rules > Add new rule. 
-
-![Screenshot 2024-10-28 152809](https://github.com/user-attachments/assets/cf54d092-4e43-4cd7-a66d-71dd70ca4637)
-
-Observing the traffic from the windows VM. you can see the new security rule in the Linux VM is now blocking the ICMP traffic causing the request to be timed out.  
-
-![Screenshot 2024-10-28 155349](https://github.com/user-attachments/assets/e1d1e702-325f-40c8-a816-7c211e0ef171)
-
-Filter SSH traffic in wireshark
-
-From the Window VM, Connect to the linux VM through SSH & Observe the traffic in Wireshark. you can see we sucessfully made a secure connection to the Linux VM & can see everything that happening on the backend through wireshark. (SSH uses TCP Port 22)
-
-![Screenshot 2024-10-28 161808](https://github.com/user-attachments/assets/d717998d-5ebd-433e-bef0-58ff06c4f1f5)
-
-From the Windows VM Power shell command line, type "Nslookup" Google.com & Disney.com & observe the DNS traffic in wireshark. DNS is used to convert IP address into Domain Names & vice versa.  (DNS uses Port 53 TCP & UDP)
-
-![Screenshot 2024-10-28 162837](https://github.com/user-attachments/assets/2b354611-f97f-43a4-a95b-8bb37101ba37)
-
-RDP (Remote Desktop) traffic in wireshark constant spam. The RDP (protocol) is constantly showing you a live stream from one computer to another, therefor traffic is always being transmitted. RDP uses (tcp.port == 3389)
-
+<h3>Clean Up</h3>
+<p>
+Open the windows command prompt, enter logoff to end session. It is best practice to delete all of the resources in Azure Portal after finished with the lab to not accumulate a billing cost
+</p>
+<img src="https://i.imgur.com/Dp0zcVo.png" height="70%" width="70%" alt="Disk Sanitization Steps"/>
+</p>
+This is the conclusion of this lab
 
 
