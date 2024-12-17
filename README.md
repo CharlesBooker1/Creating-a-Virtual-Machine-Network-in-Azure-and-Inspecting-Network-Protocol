@@ -4,7 +4,7 @@
 </p>
 
 <h1 align = "center">Virtual Machines and Inspecting Network Protocols</h1>
-This tutorial outlines how to set up a virtual machine network in Microsoft Azure and observing the traffic between a windows and linux machine.
+This tutorial outlines how to set up a virtual machine network in Microsoft Azure and observing network traffic between a windows and linux machine using wireshark.
 
 </p>
 
