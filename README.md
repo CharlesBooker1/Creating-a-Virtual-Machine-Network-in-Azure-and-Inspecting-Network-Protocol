@@ -4,7 +4,7 @@
 </p>
 
 <h1 align = "center">Virtual Machines and Inspecting Network Protocols</h1>
-This tutorial outlines how to set up a virtual machine network in Microsoft Azure and doing some exercises observing traffic.
+This tutorial outlines how to set up a virtual machine network in Microsoft Azure and observing the traffic between a windows and linux machine.
 
 </p>
 
