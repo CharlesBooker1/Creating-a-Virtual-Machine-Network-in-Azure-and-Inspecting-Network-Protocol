@@ -3,7 +3,7 @@
   <img src="https://i.imgur.com/Ua7udoS.png" alt="Traffic Examination"/> 
 </p>
 
-<h1 align = "center">Virtual Machine and Inspecting Network Protocols</h1>
+<h1 align = "center">Virtual Machines and Inspecting Network Protocols</h1>
 This tutorial outlines how to set up a virtual machine network in Microsoft Azure and doing some exercises observing traffic.
 
 </p>
