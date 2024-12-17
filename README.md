@@ -70,7 +70,7 @@ From within the Windows VM Ping "Google.com" & Obeserve the ICMP traffic inside 
 
 ![Screenshot 2024-10-28 151603](https://github.com/user-attachments/assets/52b85815-3919-4774-a3e3-9bca94ab9267)
 
-![Screenshot 2024-10-28 151856](https://github.com/user-attachments/assets/a75777ed-bff2-4560-9c5f-b6ccefe64da0)
+![Screenshot 2024-10-28 151856](https://i.imgur.com/oSiHxnk.png)
 
 in Azure Configure Network Security Rule To Deny ICMP traffic. 
 
